@@ -1,0 +1,65 @@
+{
+  "settings": "الإعدادات",
+  "language": "اللغة",
+  "english": "الإنجليزية",
+  "arabic": "العربية",
+  "order": "الطلب",
+  "table": "طاولة {number}",
+  "@table": {
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "total": "المجموع",
+  "completeOrder": "إتمام الطلب",
+  "success": "تم بنجاح!",
+  "orderCompletedFor": "تم إتمام الطلب بنجاح لـ {name}",
+  "@orderCompletedFor": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "ok": "موافق",
+  "addedToOrder": "تمت إضافة {item} إلى الطلب",
+  "@addedToOrder": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "searchHint": "البحث باسم العميل أو رقم الطاولة...",
+  "noOrdersFound": "لا توجد طلبات",
+  "customerInfo": "معلومات العميل",
+  "name": "الاسم",
+  "nameRequired": "الاسم مطلوب",
+  "phone": "الهاتف",
+  "address": "العنوان",
+  "submit": "إرسال",
+  "cancel": "إلغاء",
+  "menuItem": "عنصر القائمة رقم {id}",
+  "@menuItem": {
+    "placeholders": {
+      "id": {}
+    }
+  },
+
+  "home": "الرئيسية",
+  "menu": "القائمة",
+  "history": "السجل",
+  "promos": "العروض",
+  "search": "ابحث عن عنصر في القائمة...",
+  "orderCompleted": "تم إتمام الطلب بنجاح لـ {name}",
+  "@orderCompleted": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "undo": "إلغاء",
+  "burger": "بورجر",
+  "noodles": "معكرونة",
+  "drinks": "مشروبات",
+  "desserts": "حلويات",
+  "restaurantName": "مطعم المطبخ العربي",
+  "viewOrder": "عرض الطلب",
+  "deliveryAddress": "عنوان التوصيل",
+  "orderItems": "عناصر الطلب"
+} 

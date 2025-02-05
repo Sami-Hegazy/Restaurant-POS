@@ -1,0 +1,65 @@
+{
+  "settings": "Settings",
+  "language": "Language",
+  "english": "English",
+  "arabic": "Arabic",
+  "order": "Order",
+  "table": "Table {number}",
+  "@table": {
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "total": "Total",
+  "completeOrder": "Complete Order",
+  "success": "Success!",
+  "orderCompletedFor": "Order completed successfully for {name}",
+  "@orderCompletedFor": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "ok": "OK",
+  "addedToOrder": "Added {item} to order",
+  "@addedToOrder": {
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "searchHint": "Search by customer name or table number...",
+  "noOrdersFound": "No orders found",
+  "customerInfo": "Customer Information",
+  "name": "Name",
+  "nameRequired": "Name is required",
+  "phone": "Phone",
+  "address": "Address",
+  "submit": "Submit",
+  "cancel": "Cancel",
+  "menuItem": "Menu Item Number {id}",
+  "@menuItem": {
+    "placeholders": {
+      "id": {}
+    }
+  },
+
+  "home": "Home",
+  "menu": "Menu",
+  "history": "History",
+  "promos": "Promos",
+  "search": "Search menu here...",
+  "orderCompleted": "Order completed successfully for {name}",
+  "@orderCompleted": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "undo": "UNDO",
+  "burger": "Burger",
+  "noodles": "Noodles",
+  "drinks": "Drinks",
+  "desserts": "Desserts",
+  "restaurantName": "The Arabic Kitchen",
+  "viewOrder": "View Order",
+  "deliveryAddress": "Delivery Address",
+  "orderItems": "Order Items"
+}

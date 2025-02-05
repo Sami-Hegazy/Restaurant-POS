@@ -1,148 +1,156 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_pos/generated/l10n.dart';
 import 'order_item.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../cubits/order/order_cubit.dart';
+import '../models/order_model.dart';
+import '../widgets/customer_info_dialog.dart';
 
 class OrderSection extends StatelessWidget {
   const OrderSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _topMenu(
-          title: 'Order',
-          subTitle: 'Table 8',
-          action: Container(),
-        ),
-        const SizedBox(height: 20),
-        Expanded(
-          child: ListView(
-            children: const [
-              OrderItem(
-                image: 'assets/items/1.png',
-                title: 'Original Burger',
-                qty: '2',
-                price: '\$5.99',
-              ),
-              OrderItem(
-                image: 'assets/items/2.png',
-                title: 'Double Burger',
-                qty: '3',
-                price: '\$10.99',
-              ),
-              OrderItem(
-                image: 'assets/items/6.png',
-                title: 'Special Black Burger',
-                qty: '2',
-                price: '\$8.00',
-              ),
-              OrderItem(
-                image: 'assets/items/4.png',
-                title: 'Special Cheese Burger',
-                qty: '2',
-                price: '\$12.99',
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-              color: const Color(0xff1f2029),
-            ),
-            child: Column(
-              children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Sub Total',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Text(
-                      '\$40.32',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
+    return BlocBuilder<OrderCubit, OrderState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            _topMenu(
+              title: S.of(context).order,
+              subTitle: S.of(context).table(state.tableNumber),
+              action: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: const Color(0xff1f2029),
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(color: Colors.deepOrangeAccent, width: 1),
                 ),
-                const SizedBox(height: 20),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Tax',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Text(
-                      '\$4.32',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 20),
-                  height: 2,
-                  width: double.infinity,
-                  color: Colors.white,
-                ),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Total',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Text(
-                      '\$44.64',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 30),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.deepOrange,
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                child: DropdownButton<String>(
+                  value: state.tableNumber,
+                  icon:
+                      const Icon(Icons.arrow_drop_down, color: Colors.white54),
+                  dropdownColor: const Color(0xff1f2029),
+                  underline: Container(), // Remove default underline
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
                   ),
-                  onPressed: () {},
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.print, size: 16),
-                      SizedBox(width: 6),
-                      Text('Print Bills'),
-                    ],
-                  ),
+                  items: List.generate(10, (i) => (i + 1).toString())
+                      .map((tableNum) => DropdownMenuItem(
+                            value: tableNum,
+                            child: Text(
+                              S.of(context).table(tableNum),
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      context.read<OrderCubit>().setTableNumber(value);
+                    }
+                  },
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ],
+            const SizedBox(height: 20),
+            Expanded(
+              child: ListView.builder(
+                itemCount: state.items.length,
+                itemBuilder: (context, index) {
+                  final item = state.items[index];
+                  // You'll need to fetch menu item details using the menuItemId
+                  return OrderItem(
+                    image: 'assets/items/${item.menuItemId}.png',
+                    title: S.of(context).menuItem(item.menuItemId),
+                    qty: item.quantity.toString(),
+                    price: '\$${item.price}',
+                    onRemove: () {
+                      context.read<OrderCubit>().removeItem(item.menuItemId);
+                    },
+                    onQuantityChanged: (quantity) {
+                      context.read<OrderCubit>().updateQuantity(
+                            item.menuItemId,
+                            quantity,
+                          );
+                    },
+                  );
+                },
+              ),
+            ),
+            _buildTotalSection(state.totalAmount),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.deepOrange,
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: state.items.isEmpty
+                  ? null
+                  : () async {
+                      final customerInfo = await showDialog<CustomerInfo>(
+                        context: context,
+                        builder: (context) => const CustomerInfoDialog(),
+                      );
+
+                      if (customerInfo != null) {
+                        if (!context.mounted) return;
+                        await context
+                            .read<OrderCubit>()
+                            .completeOrder(customerInfo);
+
+                        if (!context.mounted) return;
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            backgroundColor: const Color(0xff1f2029),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            title: Row(
+                              children: [
+                                const Icon(Icons.check_circle,
+                                    color: Colors.green),
+                                const SizedBox(width: 10),
+                                Text(
+                                  S.of(context).success,
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                              ],
+                            ),
+                            content: Text(
+                              S.of(context).orderCompleted(customerInfo.name),
+                              style: const TextStyle(color: Colors.white70),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text(
+                                  S.of(context).ok,
+                                  style: const TextStyle(
+                                    color: Colors.deepOrangeAccent,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.check_circle, size: 16),
+                  const SizedBox(width: 6),
+                  Text(S.of(context).completeOrder),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -180,6 +188,42 @@ class OrderSection extends StatelessWidget {
         Expanded(flex: 1, child: Container(width: double.infinity)),
         Expanded(flex: 5, child: action),
       ],
+    );
+  }
+
+  Widget _buildTotalSection(double total) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        color: const Color(0xff1f2029),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Total',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+              Text(
+                '\$${total.toStringAsFixed(2)}',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepOrangeAccent,
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_pos/generated/l10n.dart';
 import 'menu_item.dart';
 import 'logo.dart';
+import 'package:go_router/go_router.dart';
+import '../config/routes.dart';
 
 class SideMenu extends StatelessWidget {
-  final String pageActive;
-  final Function(String) onPageChanged;
+  final String currentPath;
 
   const SideMenu({
     super.key,
-    required this.pageActive,
-    required this.onPageChanged,
+    required this.currentPath,
   });
 
   @override
@@ -21,34 +22,34 @@ class SideMenu extends StatelessWidget {
         child: ListView(
           children: [
             MenuItem(
-              menu: 'Home',
+              menu: S.of(context).home,
               icon: Icons.rocket_sharp,
-              isActive: pageActive == 'Home',
-              onTap: () => onPageChanged('Home'),
+              isActive: currentPath == AppRoutes.home,
+              onTap: () => context.go(AppRoutes.home),
             ),
             MenuItem(
-              menu: 'Menu',
+              menu: S.of(context).menu,
               icon: Icons.format_list_bulleted_rounded,
-              isActive: pageActive == 'Menu',
-              onTap: () => onPageChanged('Menu'),
+              isActive: currentPath == AppRoutes.menu,
+              onTap: () => context.go(AppRoutes.menu),
             ),
             MenuItem(
-              menu: 'History',
+              menu: S.of(context).history,
               icon: Icons.history_toggle_off_rounded,
-              isActive: pageActive == 'History',
-              onTap: () => onPageChanged('History'),
+              isActive: currentPath == AppRoutes.history,
+              onTap: () => context.go(AppRoutes.history),
             ),
             MenuItem(
-              menu: 'Promos',
+              menu: S.of(context).promos,
               icon: Icons.discount_outlined,
-              isActive: pageActive == 'Promos',
-              onTap: () => onPageChanged('Promos'),
+              isActive: currentPath == AppRoutes.promos,
+              onTap: () => context.go(AppRoutes.promos),
             ),
             MenuItem(
-              menu: 'Settings',
+              menu: S.of(context).settings,
               icon: Icons.sports_soccer_outlined,
-              isActive: pageActive == 'Settings',
-              onTap: () => onPageChanged('Settings'),
+              isActive: currentPath == AppRoutes.settings,
+              onTap: () => context.go(AppRoutes.settings),
             ),
           ],
         ),

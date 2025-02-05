@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_pos/generated/l10n.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final Function(String) onChanged;
@@ -14,12 +15,13 @@ class CustomSearchBar extends StatelessWidget {
       onChanged: onChanged,
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
-        hintText: 'Search menu here...',
+        hintText: S.of(context).search,
         hintStyle: const TextStyle(color: Colors.white54, fontSize: 11),
         prefixIcon: const Icon(Icons.search, color: Colors.white54),
         filled: true,
         fillColor: const Color(0xff1f2029),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
           borderSide: BorderSide.none,

@@ -1,4 +1,5 @@
 class MenuItemModel {
+  final int? id;
   final String image;
   final String title;
   final String price;
@@ -6,6 +7,7 @@ class MenuItemModel {
   final String category;
 
   const MenuItemModel({
+    this.id,
     required this.image,
     required this.title,
     required this.price,
@@ -17,6 +19,7 @@ class MenuItemModel {
 final List<MenuItemModel> menuItems = [
   // Burgers
   const MenuItemModel(
+    id: 1,
     image: 'assets/items/1.png',
     title: 'Original Burger',
     price: '\$5.99',
@@ -24,6 +27,7 @@ final List<MenuItemModel> menuItems = [
     category: 'Burger',
   ),
   const MenuItemModel(
+    id: 2,
     image: 'assets/items/2.png',
     title: 'Double Burger',
     price: '\$10.99',
@@ -34,6 +38,7 @@ final List<MenuItemModel> menuItems = [
 
   // Noodles
   const MenuItemModel(
+    id: 3,
     image: 'assets/items/5.png',
     title: 'Ramen Noodles',
     price: '\$8.99',
@@ -44,6 +49,7 @@ final List<MenuItemModel> menuItems = [
 
   // Drinks
   const MenuItemModel(
+    id: 4,
     image: 'assets/items/8.png',
     title: 'Cola',
     price: '\$2.99',
@@ -54,6 +60,7 @@ final List<MenuItemModel> menuItems = [
 
   // Desserts
   const MenuItemModel(
+    id: 5,
     image: 'assets/items/11.png',
     title: 'Ice Cream',
     price: '\$4.99',

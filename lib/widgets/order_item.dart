@@ -5,6 +5,8 @@ class OrderItem extends StatelessWidget {
   final String title;
   final String qty;
   final String price;
+  final VoidCallback onRemove;
+  final Function(int) onQuantityChanged;
 
   const OrderItem({
     super.key,
@@ -12,6 +14,8 @@ class OrderItem extends StatelessWidget {
     required this.title,
     required this.qty,
     required this.price,
+    required this.onRemove,
+    required this.onQuantityChanged,
   });
 
   @override
@@ -61,13 +65,30 @@ class OrderItem extends StatelessWidget {
               ],
             ),
           ),
-          Text(
-            '$qty x',
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.remove_circle_outline,
+                    color: Colors.white),
+                onPressed: () => onQuantityChanged(int.parse(qty) - 1),
+              ),
+              Text(
+                qty,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.add_circle_outline, color: Colors.white),
+                onPressed: () => onQuantityChanged(int.parse(qty) + 1),
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
+                onPressed: onRemove,
+              ),
+            ],
           ),
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_pos/cubits/category/category_cubit.dart';
+import 'package:restaurant_pos/generated/l10n.dart';
 import '../widgets/menu_grid.dart';
 import '../widgets/order_section.dart';
 import '../widgets/category_tabs.dart';
@@ -7,6 +8,7 @@ import '../widgets/top_menu.dart';
 import '../widgets/search_bar.dart';
 import '../models/menu_item_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:restaurant_pos/cubits/menu/menu_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -74,9 +76,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                     icon: const Icon(Icons.shopping_cart, color: Colors.white),
-                    label: const Text(
-                      'View Order',
-                      style: TextStyle(color: Colors.white),
+                    label: Text(
+                      S.of(context).viewOrder,
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
@@ -95,11 +97,11 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               TopMenu(
-                title: 'Lorem Restaurant',
+                title: S.of(context).restaurantName,
                 subTitle: '20 October 2022',
                 action: CustomSearchBar(
                   onChanged: (value) {
-                    print(value);
+                    context.read<MenuCubit>().searchItems(value);
                   },
                 ),
               ),
@@ -139,6 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: item.title,
                       price: item.price,
                       item: item.quantity,
+                      menuItem: item,
                     );
                   },
                   childCount: filteredItems.length,
